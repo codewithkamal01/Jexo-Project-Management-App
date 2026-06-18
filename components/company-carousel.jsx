@@ -4,6 +4,7 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import companies from "@/data/companies.json";
+
 import Image from "next/image";
 
 export default function CompanyCarousel() {

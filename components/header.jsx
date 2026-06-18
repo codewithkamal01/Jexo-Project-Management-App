@@ -1,11 +1,8 @@
-"use client";
-
-import { Show, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import UserMenu from "./user-menu";
 import { PenBox } from "lucide-react";
+import HeaderAuth from "./header-auth";
 
 export default function Header() {
   return (
@@ -29,19 +26,7 @@ export default function Header() {
             </Button>
           </Link>
 
-          <Show when="signed-in">
-            <>
-              <UserMenu />
-            </>
-          </Show>
-
-          <Show when="signed-out">
-            <>
-              <SignInButton forceRedirectUrl="/onboarding">
-                <Button variant="outline">Login</Button>
-              </SignInButton>
-            </>
-          </Show>
+          <HeaderAuth />
         </div>
       </nav>
     </header>

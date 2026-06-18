@@ -12,6 +12,12 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import CompanyCarousel from "@/components/company-carousel";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const faqs = [
   {
@@ -95,7 +101,11 @@ export default function Home() {
           </Button>
         </Link>
         <Link href="#features">
-          <Button size="lg" variant="outline" className="mr-4 h-9 px-3 text-base cursor-pointer">
+          <Button
+            size="lg"
+            variant="outline"
+            className="mr-4 h-9 px-3 text-base cursor-pointer"
+          >
             Learn More
           </Button>
         </Link>
@@ -104,7 +114,9 @@ export default function Home() {
       {/* Features Section */}
       <section id="features" className="bg-gray-900 py-10 px-5">
         <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-12 text-center">Powerful Features</h3>
+          <h3 className="text-3xl font-bold mb-12 text-center">
+            Powerful Features
+          </h3>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="bg-gray-800">
@@ -132,26 +144,38 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      {/* <section className="bg-gray-900 py-20 px-5">
+      <section className="bg-gray-900 py-20 px-5">
         <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-12 text-center">
-            Frequently Asked Questions
-          </h3>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-3xl font-bold mb-2">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs text-gray-400 max-w-2xl mx-auto">
+              Everything you need to know about Jexo and how it helps teams
+              manage projects more efficiently.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <Accordion type="single" collapsible className="space-y-2">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-lg">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
-      </section> */}
+      </section>
 
       {/* CTA Section */}
-      {/* <section className="py-20 text-center px-5">
+      <section className="py-20 text-center px-5">
         <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-6">
+          <h3 className="text-3xl font-bold mb-3">
             Ready to Transform Your Workflow?
           </h3>
           <p className="text-xl mb-12 max-w-2xl mx-auto">
@@ -164,8 +188,7 @@ export default function Home() {
             </Button>
           </Link>
         </div>
-      </section> */}
-
+      </section>
     </div>
   );
 }
