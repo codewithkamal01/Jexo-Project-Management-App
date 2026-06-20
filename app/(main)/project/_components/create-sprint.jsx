@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -55,6 +55,14 @@ export default function SprintCreationForm({
     },
   });
 
+  useEffect(() => {
+    reset({
+      name: `${projectKey}-${sprintKey}`,
+      startDate: dateRange.from,
+      endDate: dateRange.to,
+    });
+  }, [sprintKey, projectKey, reset]);
+
   const onSubmit = async (data) => {
     await createSprintFn(projectId, {
       ...data,
@@ -70,14 +78,14 @@ export default function SprintCreationForm({
     setDateRange(newRange);
 
     reset({
-      name: `${projectKey}-${sprintKey + 1}`,
+      name: "",
       startDate: newRange.from,
       endDate: newRange.to,
     });
 
     setShowForm(false);
-    toast.success("Sprint created successfully");
     router.refresh();
+    toast.success("Sprint created successfully");
   };
 
   return (
@@ -115,7 +123,6 @@ export default function SprintCreationForm({
                 <Input
                   id="name"
                   {...register("name")}
-                  readOnly
                   className="bg-slate-950"
                 />
 

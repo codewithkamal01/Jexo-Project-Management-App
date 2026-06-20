@@ -137,7 +137,7 @@ export default function SprintManager({
               onClick={() => handleStatusChange("COMPLETED")}
               disabled={loading}
               variant="destructive"
-              className="h-11 px-5"
+              className="h-8 px-4"
             >
               End Sprint
             </Button>

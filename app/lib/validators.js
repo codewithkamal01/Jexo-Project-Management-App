@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 export const projectSchema = z.object({
   name: z
@@ -15,11 +15,20 @@ export const projectSchema = z.object({
     .optional(),
 });
 
-export const sprintSchema = z.object({
-  name: z.string().min(1, "Sprint name is required"),
-  startDate: z.date(),
-  endDate: z.date(),
-});
+export const sprintSchema = z
+  .object({
+    name: z.string().min(1, "Sprint name is required"),
+    startDate: z.date({
+      required_error: "Start date is required",
+    }),
+    endDate: z.date({
+      required_error: "End date is required",
+    }),
+  })
+  .refine((data) => data.endDate > data.startDate, {
+    message: "End date must be after start date",
+    path: ["endDate"],
+  });
 
 export const issueSchema = z.object({
   title: z.string().min(1, "Title is required"),

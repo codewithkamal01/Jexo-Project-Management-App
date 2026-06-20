@@ -24,6 +24,18 @@ export async function createSprint(projectId, data) {
     throw new Error("Project not found");
   }
 
+  // Prevent duplicate sprint names in same project
+  const existingSprint = await db.sprint.findFirst({
+    where: {
+      projectId,
+      name: data.name.trim(),
+    },
+  });
+
+  if (existingSprint) {
+    throw new Error("A sprint with this name already exists in this project");
+  }
+
   const sprint = await db.sprint.create({
     data: {
       name: data.name.trim(),
