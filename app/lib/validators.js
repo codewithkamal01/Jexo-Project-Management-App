@@ -32,7 +32,7 @@ export const sprintSchema = z
 
 export const issueSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  assigneeId: z.string().cuid("Please select assignee"),
+  assigneeId: z.string().min(1, "Please select an assignee").cuid(),
   description: z.string().optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
 });

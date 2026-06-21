@@ -22,26 +22,21 @@ export default function SprintManager({
   sprints,
   projectId,
 }) {
-  const [status, setStatus] = useState(sprint.status);
+  // local status removed; use `sprint.status` directly
 
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const {
-    fn: updateStatus,
-    loading,
-    error,
-    data: updatedStatus,
-  } = useFetch(updateSprintStatus);
-
+  const selectedSprintQuery = searchParams.get("sprint");
+  const { fn: updateStatus, loading, error } = useFetch(updateSprintStatus);
   const startDate = new Date(sprint.startDate);
   const endDate = new Date(sprint.endDate);
   const now = new Date();
 
   const canStart =
-    isBefore(now, endDate) && isAfter(now, startDate) && status === "PLANNED";
-
-  const canEnd = status === "ACTIVE";
+    isBefore(now, endDate) &&
+    isAfter(now, startDate) &&
+    sprint.status === "PLANNED";
+  const canEnd = sprint.status === "ACTIVE";
 
   const handleSprintChange = (value) => {
     const selectedSprint = sprints.find((s) => s.id === value);
@@ -49,33 +44,26 @@ export default function SprintManager({
     if (!selectedSprint) return;
 
     setSprint(selectedSprint);
-    setStatus(selectedSprint.status);
 
     router.replace(`/project/${projectId}?sprint=${value}`);
   };
 
   const handleStatusChange = async (newStatus) => {
-    await updateStatus(sprint.id, newStatus);
+    const res = await updateStatus(sprint.id, newStatus);
+    if (res?.success) {
+      setSprint((prev) => ({ ...prev, status: res.sprint.status }));
+    }
   };
-
-  useEffect(() => {
-    if (!updatedStatus?.success) return;
-    setStatus(updatedStatus.sprint.status);
-
-    setSprint((prev) => ({
-      ...prev,
-      status: updatedStatus.sprint.status,
-    }));
-  }, [updatedStatus]);
+  // removed effect that synced `updatedStatus` into local state
 
   const getStatusText = () => {
-    if (status === "COMPLETED") {
+    if (sprint.status === "COMPLETED") {
       return "Sprint Ended";
     }
-    if (status === "ACTIVE" && isAfter(now, endDate)) {
+    if (sprint.status === "ACTIVE" && isAfter(now, endDate)) {
       return `Overdue by ${formatDistanceToNow(endDate)}`;
     }
-    if (status === "PLANNED" && isBefore(now, startDate)) {
+    if (sprint.status === "PLANNED" && isBefore(now, startDate)) {
       return `Starts in ${formatDistanceToNow(startDate)}`;
     }
 
@@ -83,7 +71,7 @@ export default function SprintManager({
   };
 
   useEffect(() => {
-    const sprintId = searchParams.get("sprint");
+    const sprintId = selectedSprintQuery;
     if (!sprintId) return;
     if (sprintId === sprint.id) return;
     const selectedSprint = sprints.find((s) => s.id === sprintId);
@@ -93,8 +81,8 @@ export default function SprintManager({
       prev?.id !== selectedSprint.id ? selectedSprint : prev,
     );
 
-    setStatus(selectedSprint.status);
-  }, [searchParams, sprints]);
+    // rely on parent `sprint` prop for status
+  }, [selectedSprintQuery, sprints, sprint.id, setSprint]);
 
   return (
     <>
@@ -103,17 +91,22 @@ export default function SprintManager({
         <div className="flex-1 bg-slate-950">
           <Select value={sprint.id} onValueChange={handleSprintChange}>
             <SelectTrigger className="bg-slate-950 border-slate-800 h-12 w-full">
-              <SelectValue placeholder="Select Sprint" />
+              <SelectValue>{sprint?.name}</SelectValue>
             </SelectTrigger>
 
-            <SelectContent className="w-full">
-              {sprints.map((sprint) => (
-                <SelectItem key={sprint.id} value={sprint.id}>
-                  <span className="font-medium ">{sprint.name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {format(new Date(sprint.startDate), "MMM d, yyyy")} →{" "}
-                    {format(new Date(sprint.endDate), "MMM d, yyyy")}
-                  </span>
+            <SelectContent
+              className="w-[var(--radix-select-trigger-width)] bg-slate-950 border border-slate-800"
+              position="popper"
+            >
+              {sprints.map((item) => (
+                <SelectItem key={item.id} value={item.id}>
+                  <div className="flex flex-col py-1">
+                    <span className="font-medium">{item.name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {format(new Date(item.startDate), "MMM d, yyyy")} →{" "}
+                      {format(new Date(item.endDate), "MMM d, yyyy")}
+                    </span>
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>

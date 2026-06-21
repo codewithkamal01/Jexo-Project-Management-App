@@ -61,7 +61,7 @@ export default function SprintCreationForm({
       startDate: dateRange.from,
       endDate: dateRange.to,
     });
-  }, [sprintKey, projectKey, reset]);
+  }, [sprintKey, projectKey, reset, dateRange]);
 
   const onSubmit = async (data) => {
     await createSprintFn(projectId, {

@@ -18,7 +18,7 @@ import { BarLoader } from "react-spinners";
 export default function CreateProjectPage() {
   const { isLoaded: isOrgLoaded, membership } = useOrganization();
   const { isLoaded: isUserLoaded } = useUser();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const isAdmin = isOrgLoaded && isUserLoaded && membership?.role === "org:admin";
 
   const router = useRouter();
 
@@ -46,11 +46,7 @@ export default function CreateProjectPage() {
     await createProjectFn(data);
   };
 
-  useEffect(() => {
-    if (isOrgLoaded && isUserLoaded && membership) {
-      setIsAdmin(membership.role === "org:admin");
-    }
-  }, [isOrgLoaded, isUserLoaded, membership]);
+  // derive `isAdmin` directly from organization membership
 
   useEffect(() => {
     if (project) {
