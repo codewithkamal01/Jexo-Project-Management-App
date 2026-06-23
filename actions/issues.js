@@ -137,5 +137,134 @@ export async function updateIssueOrder(updatedIssues) {
   };
 }
 
+export async function deleteIssue(issueId) {
+  const { userId, orgId } = await auth();
 
+  if (!userId || !orgId) {
+    throw new Error("Unauthorized");
+  }
 
+  const user = await db.user.findUnique({
+    where: {
+      clerkUserId: userId,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const issue = await db.issue.findUnique({
+    where: {
+      id: issueId,
+    },
+    include: {
+      project: true,
+    },
+  });
+
+  if (!issue) {
+    throw new Error("Issue not found");
+  }
+
+  if (issue.project.organizationId !== orgId) {
+    throw new Error("Unauthorized");
+  }
+
+  // Only reporter can delete
+  if (issue.reporterId !== user.id) {
+    throw new Error("You don't have permission to delete this issue");
+  }
+
+  await db.issue.delete({
+    where: {
+      id: issueId,
+    },
+  });
+
+  return {
+    success: true,
+  };
+}
+
+export async function updateIssue(issueId, data) {
+  const { userId, orgId } = await auth();
+
+  if (!userId || !orgId) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const issue = await db.issue.findUnique({
+      where: {
+        id: issueId,
+      },
+      include: {
+        project: true,
+      },
+    });
+
+    if (!issue) {
+      throw new Error("Issue not found");
+    }
+
+    if (issue.project.organizationId !== orgId) {
+      throw new Error("Unauthorized");
+    }
+
+    const updatedIssue = await db.issue.update({
+      where: {
+        id: issueId,
+      },
+      data: {
+        title: data.title ?? issue.title,
+        description: data.description ?? issue.description,
+        status: data.status ?? issue.status,
+        priority: data.priority ?? issue.priority,
+        assigneeId: data.assigneeId ?? issue.assigneeId,
+      },
+      include: {
+        assignee: true,
+        reporter: true,
+      },
+    });
+
+    return updatedIssue;
+  } catch (error) {
+    throw new Error("Error updating issue: " + error.message);
+  }
+}
+
+export async function getUserIssues(userId) {
+  const { orgId } = await auth();
+
+  if (!userId || !orgId) {
+    throw new Error("No user id or organization id found");
+  }
+
+  const user = await db.user.findUnique({
+    where: {
+      clerkUserId: userId,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const issues = await db.issue.findMany({
+    where: {
+      OR: [{ assigneeId: user.id }, { reporterId: user.id }],
+      project: {
+        organizationId: orgId,
+      },
+    },
+    include: {
+      project: true,
+      assignee: true,
+      reporter: true,
+    },
+  });
+
+  return issues;
+}

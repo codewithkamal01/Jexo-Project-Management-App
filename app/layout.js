@@ -38,11 +38,19 @@ export default async function RootLayout({ children }) {
             <Header />
             <main className="min-h-screen">{children}</main>
             <Toaster richColors />
-            <footer className="bg-gray-900 py-12">
-              <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with ❤️ by Kamal</p>
-              </div>
-            </footer>
+          <footer className="border-t border-slate-800 bg-slate-950/80 backdrop-blur-md">
+  <div className="container mx-auto px-3 py-4 flex flex-col items-center text-center space-y-3">
+    <h3 className="text-xl font-semibold gradient-title pb-2 m-0">Jexo</h3>
+    <p className="text-sm text-slate-400 max-w-lg">
+      Streamline your workflow. Manage projects, sprints, and issues in one place.
+    </p>
+
+    <div className="text-sm text-slate-500">
+      © {new Date().getFullYear()} Jexo • Built with ❤️ by Kamal
+    </div>
+    
+  </div>
+</footer>
           </ThemeProvider>
         </body>
       </html>

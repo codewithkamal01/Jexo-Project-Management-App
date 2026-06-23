@@ -40,11 +40,8 @@ export default function SprintManager({
 
   const handleSprintChange = (value) => {
     const selectedSprint = sprints.find((s) => s.id === value);
-
     if (!selectedSprint) return;
-
     setSprint(selectedSprint);
-
     router.replace(`/project/${projectId}?sprint=${value}`);
   };
 
@@ -95,7 +92,7 @@ export default function SprintManager({
             </SelectTrigger>
 
             <SelectContent
-              className="w-[var(--radix-select-trigger-width)] bg-slate-950 border border-slate-800"
+              className="w-(--radix-select-trigger-width) bg-slate-950 border border-slate-800"
               position="popper"
             >
               {sprints.map((item) => (

@@ -91,9 +91,9 @@ export async function getOrganizationUsers(orgId) {
       organizationId: orgId,
     });
 
-  const userIds = organizationMemberships.data.map(
-    (membership) => membership.publicUserData?.userId,
-  );
+  const userIds = organizationMemberships.data
+    .map((membership) => membership.publicUserData?.userId)
+    .filter((userId) => userId !== undefined);
 
   const users = await db.user.findMany({
     where: {

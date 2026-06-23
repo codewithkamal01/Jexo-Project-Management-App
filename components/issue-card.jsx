@@ -30,9 +30,9 @@ export default function IssueCard({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
 
-  const onDeleteHandler = (...params) => {
+  const onDeleteHandler = (deletedId) => {
+    onDelete(deletedId);
     router.refresh();
-    onDelete(...params);
   };
 
   const onUpdateHandler = (...params) => {

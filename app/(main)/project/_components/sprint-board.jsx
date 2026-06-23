@@ -65,7 +65,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     const freshIssues = await fetchIssues(currentSprint.id);
     setFilteredIssues(freshIssues);
   };
-  
+
   const handleFilterChange = useCallback((newFilteredIssues) => {
     setFilteredIssues((prev) => {
       if (
@@ -205,6 +205,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                         key={issue.id}
                         draggableId={issue.id}
                         index={index}
+                        isDragDisabled={issuesLoading}
                       >
                         {(provided) => (
                           <div
@@ -212,7 +213,17 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            <IssueCard issue={issue} />
+                            <IssueCard
+                              issue={issue}
+                              onDelete={(deletedId) => {
+                                setIssues((prev) =>
+                                  prev.filter((i) => i.id !== deletedId),
+                                );
+                                setFilteredIssues((prev) =>
+                                  prev.filter((i) => i.id !== deletedId),
+                                );
+                              }}
+                            />
                           </div>
                         )}
                       </Draggable>

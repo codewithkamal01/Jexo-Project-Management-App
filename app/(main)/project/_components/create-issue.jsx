@@ -71,18 +71,19 @@ export default function IssueCreationDrawer({
   }, [isOpen, orgId]);
 
   useEffect(() => {
-    if (newIssue) {
-      reset({
-        title: "",
-        priority: "MEDIUM",
-        description: "",
-        assigneeId: "",
-      });
-      onClose();
-      onIssueCreated();
-      toast.success("Issue created successfully");
-    }
-  }, [newIssue, reset, onClose, onIssueCreated]);
+    if (!newIssue) return;
+
+    reset({
+      title: "",
+      priority: "MEDIUM",
+      description: "",
+      assigneeId: "",
+    });
+
+    onClose();
+    onIssueCreated();
+    toast.success("Issue created successfully");
+  }, [newIssue]);
 
   useEffect(() => {
     return () => {

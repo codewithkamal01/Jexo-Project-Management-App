@@ -17,8 +17,9 @@ const useFetch = (cb) => {
       setData(response);
       return response;
     } catch (error) {
+      const errorMessage = error?.message || "An error occurred";
       setError(error);
-      toast.error(error.message);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
