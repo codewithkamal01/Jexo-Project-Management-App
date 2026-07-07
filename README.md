@@ -23,10 +23,11 @@ JEXO is a modern project management web application built with **Next.js**, **Pr
 - 📁 Create & Manage Projects
 - ✅ Task Creation & Management
 - 👥 Team Collaboration
+- 📅 Calendar View
 - 📊 Project Dashboard
 - 📅 Task Status Tracking
 - 🔍 Search & Filter
-- 📱 Fully Responsive UI
+- 📌 Kanban Drag & Drop
 - 🌙 Modern User Interface
 - ⚡ Fast Performance with Next.js
 
@@ -55,7 +56,7 @@ JEXO is a modern project management web application built with **Next.js**, **Pr
 
 ### Authentication
 
-- Clerk Authentication *(or replace with your auth provider)*
+- Clerk Authentication
 
 ### Deployment
 
@@ -89,7 +90,7 @@ JEXO/
 ### 1. Clone the repository
 
 ```bash
-git clone [https://github.com/codewithkamal01/Jexo-Project-Management-App]
+git clone https://github.com/codewithkamal01/Jexo-Project-Management-App
 
 cd Jexo-Project-Management-App
 ```
@@ -214,11 +215,10 @@ npm run build
 
 ## 📈 Future Improvements
 
-- 📌 Kanban Drag & Drop
+- 📱 Fully Responsive UI
 - 🔔 Real-time Notifications
 - 💬 Team Chat
 - 📎 File Attachments
-- 📅 Calendar View
 - 📊 Analytics Dashboard
 - 📱 PWA Support
 - 📧 Email Notifications
