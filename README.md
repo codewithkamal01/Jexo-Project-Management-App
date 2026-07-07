@@ -6,8 +6,6 @@ JEXO is a modern project management web application built with **Next.js**, **Pr
 
 ## 📸 Preview
 
-> Add screenshots or GIFs here
-
 | Dashboard
 <img width="1293" height="626" alt="image" src="https://github.com/user-attachments/assets/166f7fdc-51dd-4499-bb4c-275b50052155" />
 
@@ -91,9 +89,9 @@ JEXO/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/jexo.git
+git clone [https://github.com/codewithkamal01/Jexo-Project-Management-App]
 
-cd jexo
+cd Jexo-Project-Management-App
 ```
 
 ### 2. Install dependencies
