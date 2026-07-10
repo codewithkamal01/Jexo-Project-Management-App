@@ -35,9 +35,9 @@ export default function IssueCard({
     router.refresh();
   };
 
-  const onUpdateHandler = (...params) => {
+  const onUpdateHandler = (updatedIssue) => {
     router.refresh();
-    onUpdate(...params);
+    onUpdate(updatedIssue);
   };
 
   const created = formatDistanceToNow(new Date(issue.createdAt), {
@@ -69,6 +69,7 @@ export default function IssueCard({
 
       {isDialogOpen && (
         <IssueDetailsDialog
+          key={`${issue.id}-${issue.status}-${issue.priority}`}
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
           issue={issue}

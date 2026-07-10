@@ -80,6 +80,19 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
     });
   }, []);
 
+  const handleIssueUpdated = (updatedIssue) => {
+    setIssues((prev) =>
+      prev.map((issue) =>
+        issue.id === updatedIssue.id ? { ...issue, ...updatedIssue } : issue,
+      ),
+    );
+    setFilteredIssues((prev) =>
+      prev.map((issue) =>
+        issue.id === updatedIssue.id ? { ...issue, ...updatedIssue } : issue,
+      ),
+    );
+  };
+
   const onDragEnd = async (result) => {
     if (currentSprint.status === "PLANNED") {
       toast.warning("Start the sprint to update board");
@@ -223,6 +236,7 @@ export default function SprintBoard({ sprints, projectId, orgId }) {
                                   prev.filter((i) => i.id !== deletedId),
                                 );
                               }}
+                              onUpdate={handleIssueUpdated}
                             />
                           </div>
                         )}
